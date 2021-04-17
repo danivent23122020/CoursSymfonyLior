@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Twig\Environment;
 use App\Taxes\Calculator;
 use Cocur\Slugify\Slugify;
 use Psr\Log\LoggerInterface;
@@ -15,10 +16,11 @@ class HelloController{
     /**
      * @Route("/hello/{name?World}", name="hello", methods={"GET", "POST"})
      */
-    public function hello($name = "World", LoggerInterface $logger, Calculator $calculator, Slugify $slugify){
+    public function hello($name = "World", LoggerInterface $logger, Calculator $calculator, Slugify $slugify, Environment $twig){
         
-        // test pour formation slugify
-        // $slugify = new Slugify();
+        // nécessaire pour formation -> twig
+        dump($twig);
+        // test pour formation -> slugify
         dump($slugify->slugify("Hello World"));
         
         $logger->error("Mon message de log !");
