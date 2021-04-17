@@ -22,7 +22,7 @@ class TestController{
     public function index(){
         $tva = $this->calculator->calcul(100);
         dump($tva);
-        dump("ça fonctionne");
+        dump("Ça fonctionne");
         die();
     }
     // route test
