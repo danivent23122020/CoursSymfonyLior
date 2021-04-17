@@ -7,10 +7,12 @@ use Psr\Log\LoggerInterface;
 class Calculator{
 
     protected $logger;
+    protected $tva;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, float $tva)
     {
         $this->logger =$logger;
+        $this->tva =$tva;
     }
 
     
