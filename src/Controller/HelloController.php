@@ -23,7 +23,6 @@ class HelloController{
         dump($detector->detect(101));
         dump($detector->detect(10));
         
-        
         // nécessaire pour formation -> twig
         dump($twig);
         // test pour formation -> slugify
