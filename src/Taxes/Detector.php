@@ -2,29 +2,25 @@
 
 namespace App\Taxes;
 
-use Psr\Log\LoggerInterface;
-
 class Detector{
+    
+    public function detect(float $prix) : bool {
+            if($prix > 100){
+                return true;
+            }
+            return false;
+        }
+    public function charac(float $prix) : string {
+            if($prix > 100){
+                return "prix sup à 100";
+            }
+            return "prix inf à 100";
+        }
+    public function multipli(float $prix) : float {
+            if($prix > 100){
+                return $prix * 20;
+            }
+            return $prix * 100;
+        }
 
-    // protected $logger;
-    // protected $tva;
-    protected $amount;
-    
-    public function __construct(LoggerInterface $detect, int $amount)
-    {
-        $this->detect = $detect;
-        $this->amount =$amount;
-    }
-    
-    // public function __construct(LoggerInterface $logger, float $tva)
-    // {
-    //     $this->logger =$logger;
-    //     $this->tva =$tva;
-    // }
-
-    
-    public function calcul(float $prix) : float {
-        $this->logger->info("Un calcul a lieu : $prix");
-        return $prix * (20/100);
-    }
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Twig\Environment;
 use App\Taxes\Calculator;
+use App\Taxes\Detector;
 use Cocur\Slugify\Slugify;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,16 @@ class HelloController{
     /**
      * @Route("/hello/{name?World}", name="hello", methods={"GET", "POST"})
      */
-    public function hello($name = "World", LoggerInterface $logger, Calculator $calculator, Slugify $slugify, Environment $twig){
+    public function hello($name = "World", LoggerInterface $logger, Calculator $calculator, Slugify $slugify, Environment $twig, Detector $detector){
+
+        // exercice 01 chapitre le container de service
+        dump($detector->detect(101));
+        dump($detector->detect(10));
+        dump($detector->charac(101));
+        dump($detector->charac(10));
+        dump($detector->multipli(101));
+        dump($detector->multipli(10));
+        
         
         // nécessaire pour formation -> twig
         dump($twig);
