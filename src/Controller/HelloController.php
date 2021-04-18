@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HelloController{
- 
+
     // route hello
     /**
      * @Route("/hello/{name?World}", name="hello", methods={"GET", "POST"})
@@ -22,7 +22,7 @@ class HelloController{
         // exercice 01 chapitre le container de service
         dump($detector->detect(101));
         dump($detector->detect(10));
-        // manip perso
+        // manip perso sur exo 1
         dump($detector->charac(101));
         dump($detector->charac(10));
         dump($detector->multipli(101));
