@@ -22,6 +22,7 @@ class HelloController{
         // exercice 01 chapitre le container de service
         dump($detector->detect(101));
         dump($detector->detect(10));
+        // manip perso
         dump($detector->charac(101));
         dump($detector->charac(10));
         dump($detector->multipli(101));

@@ -10,6 +10,7 @@ class Detector{
             }
             return false;
         }
+        // manip perso
     public function charac(float $prix) : string {
             if($prix > 100){
                 return "prix sup à 100";
