@@ -22,11 +22,6 @@ class HelloController{
         // exercice 01 chapitre le container de service
         dump($detector->detect(101));
         dump($detector->detect(10));
-        // manip perso sur exo 1
-        dump($detector->charac(101));
-        dump($detector->charac(10));
-        dump($detector->multipli(101));
-        dump($detector->multipli(10));
         
         
         // nécessaire pour formation -> twig
