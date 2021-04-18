@@ -17,22 +17,7 @@ class HelloController{
     /**
      * @Route("/hello/{name?World}", name="hello", methods={"GET", "POST"})
      */
-    public function hello($name = "World", LoggerInterface $logger, Calculator $calculator, Slugify $slugify, Environment $twig, Detector $detector){
-
-        // exercice 01 chapitre le container de service
-        dump($detector->detect(101));
-        dump($detector->detect(10));
-        
-        // nécessaire pour formation -> twig
-        dump($twig);
-        // test pour formation -> slugify
-        dump($slugify->slugify("Hello World"));
-        
-        $logger->error("Mon message de log !");
-
-        $tva = $calculator->calcul(100);
-
-        dump($tva);
+    public function hello($name = "World"){
         
         return new Response("Hello $name !");
 
