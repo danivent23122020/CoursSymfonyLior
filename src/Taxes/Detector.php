@@ -10,5 +10,4 @@ class Detector{
             }
             return false;
         }
-
 }
