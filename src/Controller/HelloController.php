@@ -17,7 +17,12 @@ class HelloController{
         $html = $twig->render('hello.html.twig',
     [
         'name' => $name,
-        'age'=> 15
+        'ages'=> [
+            12,
+            18,
+            29,
+            15
+        ]
     ]
     );
         return new Response($html);
