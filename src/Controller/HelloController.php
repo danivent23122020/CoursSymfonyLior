@@ -2,14 +2,9 @@
 
 namespace App\Controller;
 
-use Twig\Environment;
-use App\Taxes\Calculator;
-use App\Taxes\Detector;
-use Cocur\Slugify\Slugify;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 class HelloController{
 
@@ -17,9 +12,10 @@ class HelloController{
     /**
      * @Route("/hello/{name?World}", name="hello", methods={"GET", "POST"})
      */
-    public function hello($name = "World"){
+    public function hello($name = "World", Environment $twig){
         
-        return new Response("Hello $name !");
+        $html = $twig->render('hello.html.twig');
+        return new Response($html);
 
     }
 }
