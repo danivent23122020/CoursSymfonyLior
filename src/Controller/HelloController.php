@@ -27,6 +27,7 @@ class HelloController{
         ]);
     }
 
+    // route example
     /**
      * @Route("/example", name="example")
      */
