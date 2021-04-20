@@ -17,12 +17,6 @@ class HelloController{
         $html = $twig->render('hello.html.twig',
     [
         'name' => $name,
-        'ages'=> [
-            12,
-            18,
-            29,
-            15
-        ]
     ]
     );
         return new Response($html);
