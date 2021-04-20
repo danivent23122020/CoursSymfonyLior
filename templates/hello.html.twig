@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salut</title>
-</head>
-<body>
-    <h1>Hello {{prenom}} ! Twig</h1>
-    {# Exercice infos tableau #}
+{% extends "base.html.twig" %}
+{# dans le title #}
+{% block title %}
+    Hello {{prenom}}
+{% endblock %}
 
 
-</body>
-</html>
+{# dans le body #}
+{% block body %}
+    <h1>Hello {{prenom}} !</h1>
+{% endblock %}
+
