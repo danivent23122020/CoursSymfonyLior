@@ -8,13 +8,20 @@ use Twig\Environment;
 
 class HelloController{
     
+    // factorisation des mêmes éléments des fonctions
+    protected $twig;
+    public function __construct(Environment $twig)
+    {
+        $this->twig= $twig;
+    }
+    
     // route hello
     /**
      * @Route("/hello/{prenom?World}", name="hello", methods={"GET", "POST"})
      */
-    public function hello($prenom = "World", Environment $twig){
+    public function hello($prenom = "World"){
         
-            $html = $twig->render('hello.html.twig',
+            $html = $this->twig->render('hello.html.twig',
         [
             'prenom' => $prenom,
         ]
@@ -25,9 +32,9 @@ class HelloController{
     /**
      * @Route("/example", name="example")
      */
-    public function example(Environment $twig){
+    public function example(){
         
-            $html = $twig->render('example.html.twig',
+            $html = $this->twig->render('example.html.twig',
         [
             'age' => 33,
         ]
