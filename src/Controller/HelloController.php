@@ -8,7 +8,7 @@ use Twig\Environment;
 
 class HelloController{
     
-    // factorisation des mêmes éléments des fonctions
+    // factorisation de Environment $twig
     protected $twig;
     public function __construct(Environment $twig)
     {
@@ -21,24 +21,26 @@ class HelloController{
      */
     public function hello($prenom = "World"){
         
-            $html = $this->twig->render('hello.html.twig',
+            return $this->render('hello.html.twig',
         [
-            'prenom' => $prenom,
-        ]
-        );
-            return new Response($html);
+            'prenom' => $prenom
+        ]);
     }
 
     /**
      * @Route("/example", name="example")
      */
     public function example(){
-        
-            $html = $this->twig->render('example.html.twig',
+        return $this->render('example.html.twig', 
         [
-            'age' => 33,
-        ]
-        );
+            'age' => 33
+        ]);
+    }
+
+    // fonction finale dynamique
+    protected function render(string $path, array $variables =[]){
+        
+        $html = $this->twig->render($path, $variables);
             return new Response($html);
     }
 }
