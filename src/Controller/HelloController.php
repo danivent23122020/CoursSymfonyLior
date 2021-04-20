@@ -10,13 +10,13 @@ class HelloController{
 
     // route hello
     /**
-     * @Route("/hello/{name?World}", name="hello", methods={"GET", "POST"})
+     * @Route("/hello/{prenom?World}", name="hello", methods={"GET", "POST"})
      */
-    public function hello($name = "World", Environment $twig){
+    public function hello($prenom = "World", Environment $twig){
         
         $html = $twig->render('hello.html.twig',
     [
-        'name' => $name,
+        'prenom' => $prenom,
     ]
     );
         return new Response($html);
