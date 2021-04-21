@@ -11,7 +11,7 @@ class HomeController extends AbstractController{
     /**
      * @Route("/", name="homepage")
      */
-    public function homeage(){
+    public function homepage(){
         return $this->render('home.tml.twig');
     }
 }
