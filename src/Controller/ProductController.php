@@ -2,18 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
-use App\Repository\ProductRepository;
 use Attribute;
+use App\Entity\Category;
+use App\Entity\Product;
+use App\Repository\ProductRepository;
+use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductController extends AbstractController
 {
@@ -57,9 +62,12 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/create", name="product_create")
      */
-    public function create(FormFactoryInterface $factory){
+    public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger){
         
-        $builder = $factory->createBuilder();
+        $builder = $factory->createBuilder(FormType::class, null, [
+            'data_class' => Product::class
+        ]);
+        
         $builder
         // input name
         ->add('name', TextType::class, [
@@ -78,6 +86,11 @@ class ProductController extends AbstractController
             'attr'=>[
                 'placeholder'=>'Tapez le prix du produit']
         ])
+        // input picture
+        ->add('picture', UrlType::class, [
+            'label' => 'Image du produit',
+            'attr'=>['placeholder' => 'Tapez une url d\'image'],
+        ])
         // input category
         ->add('category', EntityType::class, [
             'label' => 'Catégorie',
@@ -90,6 +103,13 @@ class ProductController extends AbstractController
         ]);
         
         $form = $builder->getForm();
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted()){
+            $product = $form->getData();
+            $product->setSlug(strtolower($slugger->slug($product->getName())));
+            dd($product);
+            }
         
         $formView = $form->createView();
         
