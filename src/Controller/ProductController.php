@@ -2,24 +2,14 @@
 
 namespace App\Controller;
 
-use Attribute;
-use App\Entity\Category;
-use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductController extends AbstractController
@@ -66,43 +56,7 @@ class ProductController extends AbstractController
      */
     public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger, EntityManagerInterface $em){
         
-        $builder = $factory->createBuilder(FormType::class, null, [
-            'data_class' => Product::class
-        ]);
-        
-        $builder
-        // input name
-        ->add('name', TextType::class, [
-            'label'=> 'Nom du produit', 
-            'attr'=> ['placeholder'=> 'Tapez le nom du produit']        
-            ])
-        // input textarea
-        ->add('shortDescription', TextareaType::class, [
-            'label'=>'Description courte',
-            'attr'=>[
-            'placeholder' => 'Tapez une descrition assez courte mais parlante pour le       visiteur' ]
-            ])
-        // input price
-        ->add('price', MoneyType::class, [
-            'label'=> 'Prix du produit',
-            'attr'=>[
-                'placeholder'=>'Tapez le prix du produit']
-        ])
-        // input picture
-        ->add('picture', UrlType::class, [
-            'label' => 'Image du produit',
-            'attr'=>['placeholder' => 'Tapez une url d\'image'],
-        ])
-        // input category
-        ->add('category', EntityType::class, [
-            'label' => 'Catégorie',
-            'attr'=>['placeholder' => '-- Choisir une catégorie --'],
-            'class' => Category::class,
-            // 'choice_label' => 'name' OU en voulant les catégories en majuscule
-            'choice_label' => function(Category $category){
-                return strtoupper($category->getName());
-            }
-        ]);
+        $builder = $factory->createBuilder(ProductType::class);       
         
         $form = $builder->getForm();
         $form->handleRequest($request);
