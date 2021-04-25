@@ -70,7 +70,10 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
             
-            dd($product);
+            return$this->redirectToRoute('product_show',[
+                'category_slug' => $product->getCategory()->getSlug(),
+                'slug' => $product->getSlug()
+            ]) ;
             }
         
         $formView = $form->createView();
@@ -93,7 +96,12 @@ class ProductController extends AbstractController
         
         if($form->isSubmitted()){
             $em->flush();
-            // dd($product);
+            
+            return$this->redirectToRoute('product_show',[
+                'category_slug' => $product->getCategory()->getSlug(),
+                'slug' => $product->getSlug()
+            ]) ;
+            
         }
         
         $formView = $form->createView();

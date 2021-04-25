@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Editer le produit {{ product.name }}</h1>
+    <h1>Editer le produit : {{ product.name }}</h1>
 
     {{form_start(formView)}}
 
@@ -30,5 +30,5 @@
     </button>
 
     {{ form_end(formView)}}
-    
+
 {% endblock %}
