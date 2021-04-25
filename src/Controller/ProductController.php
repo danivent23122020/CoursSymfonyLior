@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,15 +56,15 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/create", name="product_create")
      */
-    public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger, EntityManagerInterface $em){
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em){
+
+        $product = new Product;
         
-        $builder = $factory->createBuilder(ProductType::class);       
+        $form = $this->createForm(ProductType::class, $product);
         
-        $form = $builder->getForm();
         $form->handleRequest($request);
         
         if($form->isSubmitted()){
-            $product = $form->getData();
             $product->setSlug(strtolower($slugger->slug($product->getName())));
 
             $em->persist($product);
@@ -74,6 +76,30 @@ class ProductController extends AbstractController
         $formView = $form->createView();
         
         return $this->render('product/create.html.twig', [
+            'formView' => $formView
+        ]);
+    }
+    
+    /**
+     * @Route("/admin/product/{id}/edit", name="product_edit")
+     */
+    
+    public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em){
+        $product = $productRepository->find($id);
+        
+        $form = $this->createForm(ProductType::class, $product);
+        
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted()){
+            $em->flush();
+            // dd($product);
+        }
+        
+        $formView = $form->createView();
+        
+        return $this->render('product/edit.html.twig', [
+            'product' => $product,
             'formView' => $formView
         ]);
     }
