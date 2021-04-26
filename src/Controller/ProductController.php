@@ -4,15 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Form\ProductType;
+use Doctrine\ORM\EntityManager;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProductController extends AbstractController
 {
@@ -87,7 +93,23 @@ class ProductController extends AbstractController
      * @Route("/admin/product/{id}/edit", name="product_edit")
      */
     
-    public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em){
+    public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em, ValidatorInterface $validator){
+        
+        // ======================
+        // test validator
+        $product = new Product;
+        $product->setName("Salut à tous")
+        ->setPrice(200);
+
+        $resultat =$validator->validate($product);
+        
+        if($resultat->count() > 0){
+        dd("il y a des erreurs", $resultat);
+        }
+        dd("tout va bien");
+        
+        // =======================
+        
         $product = $productRepository->find($id);
         
         $form = $this->createForm(ProductType::class, $product);
@@ -95,7 +117,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         
         if($form->isSubmitted()){
-            dd($form->getData());
+            // dd($form->getData());
             $em->flush();
             
             return$this->redirectToRoute('product_show',[
