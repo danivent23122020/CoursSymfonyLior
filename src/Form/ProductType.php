@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -39,7 +41,7 @@ class ProductType extends AbstractType
             ->add('picture', UrlType::class, [
                 'label' => 'Image du produit',
                 'attr'=>['placeholder' => 'Tapez une url d\'image'],
-            ])
+                ])
             // input category
             ->add('category', EntityType::class, [
                 'label' => 'Catégorie',
@@ -50,7 +52,28 @@ class ProductType extends AbstractType
                     return strtoupper($category->getName());
                 }
             ]);
-        ;
+            
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
+            $product = $event->getData();
+
+            if($product->getPrice() !== null){
+                $product->setPrice($product->getPrice() * 100);
+            }
+        });
+            
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event){
+            $form = $event->getForm();
+            
+            /**
+             * @var Product
+             */
+            $product = $event->getData();
+            
+            if($product->getPrice() !== null){
+                $product->setPrice($product->getPrice() / 100);
+            }
+            
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
