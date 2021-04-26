@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,13 +41,26 @@ class CategoryController extends AbstractController
     /**
      * @Route("/admin/category/{id}/edit", name="category_edit")
      */
-    public function edit($id, CategoryRepository $categoryRepository)
+    public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em)
     {
         
         $category = $categoryRepository->find($id);
         
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted()){
+            $em->flush();
+            
+            return $this->redirectToRoute('homepage');
+        }
+        
+        
+        $formView = $form->createView();
+        
         return $this->render('category/edit.html.twig', [
-            'category' => $category
+            'category' => $category,
+            'formView' => $formView
         ]);
     }
 }
