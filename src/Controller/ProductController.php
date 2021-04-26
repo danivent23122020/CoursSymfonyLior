@@ -95,20 +95,6 @@ class ProductController extends AbstractController
     
     public function edit($id, ProductRepository $productRepository, Request $request, EntityManagerInterface $em, ValidatorInterface $validator){
         
-        // ======================
-        // test validator
-        $product = new Product;
-        $product->setName("Salut à tous")
-        ->setPrice(200);
-
-        $resultat =$validator->validate($product);
-        
-        if($resultat->count() > 0){
-        dd("il y a des erreurs", $resultat);
-        }
-        dd("tout va bien");
-        
-        // =======================
         
         $product = $productRepository->find($id);
         
