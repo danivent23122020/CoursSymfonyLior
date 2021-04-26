@@ -33,6 +33,7 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
      */
     private $slug;
 
@@ -43,11 +44,15 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url(message="La photo doit avoir une url valide")
+     * @Assert\NotBlank(message="La photo est obligatoire")
      */
     private $picture;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=20, minMessage="La description courte doit avoir au moins 20 caractères")
+     * @Assert\NotBlank(message="La description est obligatoire")
      */
     private $shortDescription;
     
@@ -61,7 +66,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -73,7 +78,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(int $price): self
+    public function setPrice(?int $price): self
     {
         $this->price = $price;
 
@@ -109,7 +114,7 @@ class Product
         return $this->picture;
     }
 
-    public function setPicture(string $picture): self
+    public function setPicture(?string $picture): self
     {
         $this->picture = $picture;
 
@@ -121,7 +126,7 @@ class Product
         return $this->shortDescription;
     }
 
-    public function setShortDescription(string $shortDescription): self
+    public function setShortDescription(?string $shortDescription): self
     {
         $this->shortDescription = $shortDescription;
 
