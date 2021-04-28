@@ -13,14 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CategoryController extends AbstractController
 {
     /**
      * @Route("/admin/category/create", name="category_create")
+     * @IsGranted("ROLE_ADMIN", message="Vous n'avez pas les droits d'accès à la page Create" )
      */
-    public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger)
+    public function create(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, Security $security)
     {
+        
         $category = new Category;
         
         $form = $this->createForm(CategoryType::class, $category);
@@ -42,18 +45,11 @@ class CategoryController extends AbstractController
     }
     /**
      * @Route("/admin/category/{id}/edit", name="category_edit")
+     * @IsGranted("ROLE_ADMIN", message="Vous n'avez pas les droits d'accès à la page Edit" )
      */
-    public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em, Security $security)
+    public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em)
     {
-        $user = $security->getUser();
-
-        if($user === null){
-            return $this->redirectToRoute('security_login');
-        }
-
-        if(!in_array("ROLE_ADMIN", $user->getRoles())){
-            throw new AccessDeniedHttpException("Vous n'avez pas le droit d'accéder à cette ressource");
-        }
+        
         
         $category = $categoryRepository->find($id);
         
