@@ -110,6 +110,9 @@ class CartService
     
     // ==========================================
     // fonction en charge du prix total du panier
+    /**
+     * @return CartItem[]
+     */
     public function getDetailedCartItems() : array
     {
         $detailedCart = [];

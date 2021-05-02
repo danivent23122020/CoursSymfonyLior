@@ -42,7 +42,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{category_slug}/{slug}", name="product_show")
+     * @Route("/{category_slug}/{slug}", name="product_show", priority=-1)
      */
     public function show($slug, ProductRepository $productRepository){
         
@@ -51,7 +51,7 @@ class ProductController extends AbstractController
             ]);
             
             if(!$product){
-                throw $this->createNotFoundException("Le produit n'existe pas.");
+                throw $this->createNotFoundException("Le produit demandé n'existe pas.");
             }
             
             return $this->render('product/show.html.twig', [

@@ -54,7 +54,7 @@
         <hr>
         <h2>Confirmez votre commande en remplissant ce formulaire</h2>
         {# formulaire #}
-        {{ form_start(confirmationForm) }}
+        {{ form_start(confirmationForm, {'action': path('purchase_confirm') } ) }}
 
         {{ form_widget(confirmationForm) }}
             <button type='submit' class="btn btn-success">
