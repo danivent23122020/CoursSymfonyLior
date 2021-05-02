@@ -29,7 +29,12 @@ class CartService
         $this->session->set('cart', $cart);
     }
 
-
+    // ========================
+    // fonction vider le panier
+    public function empty()
+    {
+        $this->saveCart([]);
+    }
     
     // ================================================
     // fonction en charge de la mise en forme du panier
