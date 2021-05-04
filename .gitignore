@@ -1,5 +1,6 @@
 
 ###> symfony/framework-bundle ###
+src/Controller/Purchase/PurchasePaymentController.php
 /.env.local
 /.env.local.php
 /.env.*.local
