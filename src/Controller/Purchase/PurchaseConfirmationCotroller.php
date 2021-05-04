@@ -2,10 +2,8 @@
 
 namespace App\Controller\Purchase;
 
-use DateTime;
 use App\Entity\Purchase;
 use App\Cart\CartService;
-use App\Entity\PurchaseItem;
 use App\Form\CartConfirmationType;
 use App\Purchase\PurchasePersister;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PurchaseConfirmationCotroller extends AbstractController
 {
@@ -67,14 +64,10 @@ class PurchaseConfirmationCotroller extends AbstractController
         
         // vient de PurchasePersister.php
         $this->persister->storePurchase($purchase);
-
-        // 9 vider le panier après enregistrement
-        $this->cartService->empty();
-        
-        // message de d'enregistrement
-        $this->addFlash('success', 'La commande a bien été enregistrée' );
         
         // redirection 
-        return $this->redirectToRoute('purchase_index');
+        return $this->redirectToRoute('purchase_payment_form', [
+            'id' => $purchase->getId()
+        ]);
     }
 }
