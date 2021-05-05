@@ -2,33 +2,42 @@
 
 namespace App\Controller\Purchase;
 
-use App\Repository\PurchaseItemRepository;
+use App\Entity\Purchase;
+use App\Repository\PurchaseRepository;
+use App\Stripe\StripeService;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PurchasePaymentController extends AbstractController 
 {
     /**
      * @Route("/purchase/pay/{id}", name="purchase_payment_form")
+     * @IsGranted("ROLE_USER")
      */
-    public function showCardForm($id, PurchaseItemRepository $purchaseItemRepository)
+    public function showCardForm($id, PurchaseRepository $purchaseRepository, StripeService $stripeService)
     {
         
-        $purchase = $purchaseItemRepository->find($id);
+        $purchase = $purchaseRepository->find($id);
 
-        if(!$purchase){
+        // conditions de non validation de la commande avec if
+        if(
+            // si il n'y a pas de purchase
+            !$purchase || 
+            // OU si je ne suis pas l'utilisateur à qui appartient cette purchase
+            ($purchase && $purchase->getUser() !== $this->getUser()) || 
+            // OU si la purchase est déjà payée
+            ($purchase && $purchase->getStatus() === Purchase::STATUS_PAID))
+            {
             return $this->redirectToRoute('cart_show');
         }
         
-        \Stripe\Stripe::setApiKey('sk_test_51In1kpGraWjWiqTvxZkcYJYBeG4vXkczITNg39HIxYYoKeEpcJq77N6qZwevKFsGveaHAeo1TEcnZqjHhC1M4HFh00gcbbmj1Z');
-
-        $intent = \Stripe\PaymentIntent::create([
-            'amount' => $purchase->getTotal(),
-            'currency' => 'eur'
-        ]);
+        $intent = $stripeService->getPaymentIntent($purchase);
 
         return $this->render('purchase/payment.html.twig', [
-            'clientSecret' => $intent->client_secret
+            'clientSecret' => $intent->client_secret,
+            'purchase' =>$purchase,
+            'stripePublicKey' => $stripeService->getPublicKey()
         ]);
     }
     

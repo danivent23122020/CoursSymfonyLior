@@ -38,3 +38,9 @@ services:
       $seuil: 100
 
   Cocur\Slugify\Slugify: ~
+
+  App\Stripe\StripeService:
+    arguments:
+      $secretKey: sk_test_51In1kpGraWjWiqTvxZkcYJYBeG4vXkczITNg39HIxYYoKeEpcJq77N6qZwevKFsGveaHAeo1TEcnZqjHhC1M4HFh00gcbbmj1Z
+      $publicKey: pk_test_51In1kpGraWjWiqTv8txvTG6BhEKGmFXLXQczJl50yHKfV6CGds1MFlDRfcNGLuF6YRJdhXvGLotZpbrrPWBUflBC00733ijNXR
+
